@@ -7,6 +7,7 @@
 ---
 
 - **One chat, three platforms.** Twitch, YouTube and TikTok merged into a single feed.
+- **Free for Twitch, forever.** Want YouTube and TikTok in the same window? That's **Chatskee Premium: $2, one time**, unlocked with the email you pay with, on up to 5 PCs.
 - **Floats over your game.** Always on top, and clicks pass straight through it.
 - **Invisible to your stream.** Hidden from OBS Display Capture, so viewers never see it.
 - **Light.** Built to run next to a game on a modest PC.
@@ -21,6 +22,11 @@
 3. Enter your channel names, press **Ctrl + Shift + L** to lock it over your game.
 
 Your game needs to run in **borderless / windowed fullscreen** (nothing can draw over exclusive fullscreen).
+
+### Premium
+
+Twitch chat is free with no limits. Premium adds YouTube and TikTok to the same overlay for a one-time $2:
+[buy.stripe.com/4gM00dddc3Ft4dH3gw43S08](https://buy.stripe.com/4gM00dddc3Ft4dH3gw43S08). After paying, open Chatskee → Settings → Premium and type the email you used.
 
 ### Notes
 
