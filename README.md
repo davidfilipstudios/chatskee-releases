@@ -1,13 +1,13 @@
 <p align="center"><img src="icon.png" width="96" alt="Chatskee"></p>
 <h1 align="center">Chatskee</h1>
-<p align="center">Your Twitch, YouTube and TikTok chat in one small window that floats over your game.</p>
+<p align="center">Your Twitch, YouTube, TikTok and Kick chat in one small window that floats over your game.</p>
 
 <p align="center"><a href="https://github.com/davidfilipstudios/chatskee-releases/releases/latest"><b>Download the latest version for Windows</b></a></p>
 
 ---
 
-- **One chat, three platforms.** Twitch, YouTube and TikTok merged into a single feed.
-- **Free for Twitch, forever.** Want YouTube and TikTok in the same window? That's **Chatskee Premium: $2, one time**, unlocked with the email you pay with, on up to 5 PCs.
+- **One chat, four platforms.** Twitch, YouTube, TikTok and Kick merged into a single feed.
+- **Free for Twitch, forever.** Want YouTube, TikTok and Kick in the same window? That's **Chatskee Premium: $2, one time**, unlocked with the email you pay with, on up to 5 PCs.
 - **Floats over your game.** Always on top, and clicks pass straight through it.
 - **Invisible to your stream.** Hidden from OBS Display Capture, so viewers never see it.
 - **Light.** Built to run next to a game on a modest PC.
@@ -25,7 +25,7 @@ Your game needs to run in **borderless / windowed fullscreen** (nothing can draw
 
 ### Premium
 
-Twitch chat is free with no limits. Premium adds YouTube and TikTok to the same overlay for a one-time $2:
+Twitch chat is free with no limits. Premium adds YouTube, TikTok and Kick to the same overlay for a one-time $2:
 [buy.stripe.com/4gM00dddc3Ft4dH3gw43S08](https://buy.stripe.com/4gM00dddc3Ft4dH3gw43S08). After paying, open Chatskee → Settings → Premium and type the email you used.
 
 ### Notes
