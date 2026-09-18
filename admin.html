@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Chatskee admin</title>
+<style>
+:root{color-scheme:dark}
+body{margin:0;background:#100e1a;color:#eceaf6;font:15px/1.5 system-ui,"Segoe UI",sans-serif;padding:24px 16px 60px}
+main{max-width:900px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#9d86ff;margin:34px 0 10px}
+.muted{color:#a39ebf}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:#1a172a;border:1px solid #2e2a45;border-radius:12px;padding:14px 16px}
+.tile .v{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.tile .l{color:#a39ebf;font-size:13px}.tile .h{color:#6f6a8a;font-size:12px;margin-top:4px}
+.bar{display:grid;grid-template-columns:110px 1fr 50px;gap:10px;align-items:center;margin:6px 0}
+.track{height:10px;background:#1a172a;border-radius:5px;overflow:hidden}.fill{display:block;height:100%;background:#9d86ff}
+.n{text-align:right;font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid #2e2a45}
+th{color:#a39ebf;font-weight:600}td.paid{color:#3ddc84}td.refunded{color:#ff6b6b}
+.wrap{overflow-x:auto}footer{margin-top:40px;color:#6f6a8a;font-size:12px}
+#gate{max-width:420px;margin:60px auto;display:flex;flex-direction:column;gap:10px}
+input{padding:10px 12px;border-radius:8px;border:1px solid #2e2a45;background:#1a172a;color:#eceaf6;font:inherit}
+button{padding:10px 16px;border-radius:8px;border:0;background:#9d86ff;color:#120f22;font:inherit;font-weight:700;cursor:pointer}
+.err{color:#ff6b6b}
+</style>
+</head>
+<body>
+<main>
+  <h1>Chatskee admin</h1>
+  <p class="muted" id="sub">Loading…</p>
+  <div id="gate" hidden>
+    <p>Paste your admin key (from Supabase → <code>chatskee_admin_keys</code>). It's kept only in this browser's address bar, after the <code>#</code>.</p>
+    <input id="key" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+    <button id="go" type="button">Open dashboard</button>
+    <p class="err" id="err"></p>
+  </div>
+  <div id="dash" hidden>
+    <h2>People</h2><div class="tiles" id="people"></div>
+    <h2>Premium</h2><div class="tiles" id="premium"></div>
+    <h2>Versions in use (30 days)</h2><div id="versions"></div>
+    <h2>Platforms configured (30 days)</h2><div id="platforms"></div>
+    <h2>Latest purchases</h2><div class="wrap"><table><thead><tr><th>When (UTC)</th><th>Email</th><th>Amount</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <footer>Install counts start from Chatskee 0.11.0 (older versions never pinged). Keep this URL private; rotate the key in Supabase → chatskee_admin_keys if it leaks.</footer>
+  </div>
+</main>
+<script>
+const API = 'https://exaascvmmhypbhrpdwbb.supabase.co/functions/v1/chatskee-admin';
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const tile = (label, value, hint) => { const t = el('div', 'tile'); t.append(el('div', 'v', String(value)), el('div', 'l', label)); if (hint) t.append(el('div', 'h', hint)); return t; };
+const bars = (target, obj) => {
+  target.replaceChildren();
+  const entries = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return target.append(el('p', 'muted', 'Nothing yet.'));
+  const max = Math.max(1, ...entries.map((e) => e[1]));
+  for (const [k, v] of entries) {
+    const row = el('div', 'bar'); const track = el('span', 'track'); const fill = el('span', 'fill'); fill.style.width = Math.round((v / max) * 100) + '%';
+    track.append(fill); row.append(el('span', 'k', k), track, el('span', 'n', String(v))); target.append(row);
+  }
+};
+async function load(key) {
+  $('sub').textContent = 'Loading…';
+  const res = await fetch(API + '?format=json&key=' + encodeURIComponent(key), { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error(res.status === 404 ? 'That key is not valid.' : 'Store error ' + res.status);
+  const d = await res.json();
+  $('sub').textContent = 'Live from your Supabase. Generated ' + new Date(d.generated).toUTCString() + '.';
+  $('people').replaceChildren(tile('installs, ever', d.people.installs, 'unique PCs that ever pinged'), tile('active today', d.people.active1), tile('active, 7 days', d.people.active7), tile('active, 30 days', d.people.active30), tile('new installs, 7 days', d.people.newInstalls7), tile('installer downloads', d.people.downloads, 'GitHub, all versions'));
+  $('premium').replaceChildren(tile('paid purchases', d.premium.paid), tile('revenue', (d.premium.revenueCents / 100).toFixed(2), 'gross, before Stripe fees'), tile('refunded', d.premium.refunded), tile('PCs unlocked', d.premium.devices), tile('unlocks, 7 days', d.premium.unlocks7), tile('premium installs active', d.premium.premiumInstalls));
+  bars($('versions'), d.versionCounts); bars($('platforms'), d.platformCounts);
+  const body = $('rows'); body.replaceChildren();
+  if (!d.purchases.length) { const tr = el('tr'); const td = el('td', 'muted', 'No purchases yet.'); td.colSpan = 4; tr.append(td); body.append(tr); }
+  for (const p of d.purchases) {
+    const tr = el('tr');
+    tr.append(el('td', null, new Date(p.when).toLocaleString('en-GB', { timeZone: 'UTC' })), el('td', null, p.email), el('td', p.amount_total ? null : 'muted', p.amount_total ? (p.amount_total / 100).toFixed(2) + ' ' + String(p.currency || '').toUpperCase() : 'gift'), el('td', p.status, p.status));
+    body.append(tr);
+  }
+  $('gate').hidden = true; $('dash').hidden = false;
+}
+async function start() {
+  const key = (location.hash.match(/key=([0-9a-f-]{36})/i) || [])[1];
+  if (!key) { $('sub').textContent = ''; $('gate').hidden = false; return; }
+  try { await load(key); } catch (e) { $('sub').textContent = ''; $('gate').hidden = false; $('err').textContent = e.message; }
+}
+$('go').addEventListener('click', () => { location.hash = 'key=' + $('key').value.trim(); start(); });
+$('key').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('go').click(); });
+window.addEventListener('hashchange', start);
+start();
+</script>
+</body>
+</html>
