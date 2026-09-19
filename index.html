@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chatskee - all your stream chats in one window, over your game</title>
+<meta name="description" content="Chatskee puts your Twitch, YouTube, TikTok and Kick chat in one small window that floats over your game. Click-through, hidden from OBS, light on cheap PCs. Free for Twitch.">
+<meta property="og:title" content="Chatskee - all your stream chats in one window">
+<meta property="og:description" content="Twitch, YouTube, TikTok and Kick chat floating over your game. Your viewers never see it. Free for Twitch.">
+<meta property="og:image" content="https://davidfilipstudios.github.io/chatskee-releases/icon.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    --ground: #f5f3fb; --surface: #ffffff; --ink: #17142a; --muted: #5d5878; --rule: #dcd7ec;
+    --accent: #6a45f0; --accent-ink: #ffffff; --accent-soft: #ece6ff;
+    --twitch: #9146ff; --youtube: #e5342b; --tiktok: #0a9d97; --kick: #2f9e00;
+    --ok: #1f9d57;
+    --display: "Bricolage Grotesque", "Trebuchet MS", "Segoe UI", sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+    --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #100e1a; --surface: #1a172a; --ink: #eceaf6; --muted: #a39ebf; --rule: #2e2a45;
+      --accent: #9d86ff; --accent-ink: #120f22; --accent-soft: #251f42;
+      --twitch: #a970ff; --youtube: #ff5a4f; --tiktok: #25d6cf; --kick: #53fc18; --ok: #3ddc84;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #100e1a; --surface: #1a172a; --ink: #eceaf6; --muted: #a39ebf; --rule: #2e2a45;
+    --accent: #9d86ff; --accent-ink: #120f22; --accent-soft: #251f42;
+    --twitch: #a970ff; --youtube: #ff5a4f; --tiktok: #25d6cf; --kick: #53fc18; --ok: #3ddc84;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px 16px 64px; background: var(--ground); color: var(--ink); font: 17px/1.6 var(--body); }
+  .page { max-width: 880px; margin-inline: auto; display: flex; flex-direction: column; gap: 64px; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.12; }
+  p { margin: 0; }
+
+  /* ---- hero ---- */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 36px; align-items: center; }
+  .words { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img { width: 64px; height: 64px; }
+  .eyebrow { font: 700 12.5px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(2.4rem, 8vw, 3.6rem); font-weight: 800; letter-spacing: -0.02em; }
+  .lede { font-size: 1.15rem; color: var(--muted); max-width: 46ch; }
+  .dots { display: inline-flex; gap: 5px; vertical-align: middle; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+  .t { background: var(--twitch); } .y { background: var(--youtube); } .k { background: var(--tiktok); } .c { background: var(--kick); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; margin-top: 6px; }
+  .button { display: inline-block; padding: 14px 24px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font: 700 1.05rem/1.2 var(--body); text-decoration: none; }
+  .button small { display: block; font-weight: 400; font-size: 0.8rem; opacity: 0.85; margin-top: 3px; }
+  .button.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+  .fine { font-size: 0.9rem; color: var(--muted); }
+
+  /* ---- the overlay mock: a "game" with Chatskee floating over it ---- */
+  .scene {
+    position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 5;
+    background:
+      radial-gradient(circle at 74% 38%, #ffd27a 0 5%, transparent 5.5%),
+      linear-gradient(168deg, transparent 58%, #10202b 58.3%),
+      linear-gradient(192deg, transparent 66%, #0a1620 66.3%),
+      linear-gradient(180deg, #23405c 0%, #b5623f 52%, #e8a15a 70%, #1a2e3a 70.2%);
+  }
+  .hud { position: absolute; right: 12px; top: 12px; font: 700 11px/1 var(--mono); color: #fff; opacity: 0.75; letter-spacing: 0.08em; }
+  .crosshair { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; translate: -50% -50%; opacity: 0.8;
+    background: linear-gradient(#fff, #fff) center / 2px 100% no-repeat, linear-gradient(#fff, #fff) center / 100% 2px no-repeat; }
+  .overlay {
+    position: absolute; left: 10px; bottom: 10px; width: min(78%, 290px);
+    background: rgb(12 10 22 / 0.55); border-radius: 10px; padding: 8px 8px 8px 6px;
+    display: flex; flex-direction: column; gap: 3px;
+    font: 13.5px/1.35 "Segoe UI", var(--body); color: #f4f2fb; text-shadow: 0 1px 2px #000;
+  }
+  .m { border-left: 3px solid; padding: 2px 6px; border-radius: 0 6px 6px 0; }
+  .m b { font-weight: 700; }
+  .m.tw { border-color: #a970ff; } .m.yt { border-color: #ff5a4f; } .m.tt { border-color: #25d6cf; } .m.ki { border-color: #53fc18; }
+  .m.paid { background: rgb(61 220 132 / 0.22); }
+  .m .amt { color: #3ddc84; font-weight: 700; }
+  .bd { font: 700 9.5px/1 var(--mono); padding: 2px 4px; border-radius: 3px; color: #fff; margin-right: 3px; text-shadow: none; vertical-align: 1px; }
+  .bd.mod { background: #00ad03; } .bd.sub { background: #6441a5; } .bd.vip { background: #e005b9; }
+
+  /* ---- sections ---- */
+  section { display: flex; flex-direction: column; gap: 20px; }
+  h2 { font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 800; letter-spacing: -0.01em; }
+  .prose { max-width: 62ch; display: flex; flex-direction: column; gap: 12px; color: var(--muted); font-size: 1.08rem; }
+  .prose strong { color: var(--ink); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .card h3 { font-size: 1.12rem; font-weight: 600; }
+  .card p { color: var(--muted); font-size: 0.98rem; line-height: 1.5; }
+
+  .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .plan { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .plan.best { border: 2px solid var(--accent); }
+  .price { font: 800 2.2rem/1 var(--display); }
+  .price small { font: 400 0.95rem/1 var(--body); color: var(--muted); }
+  .plan ul { margin: 0; padding-left: 1.1em; color: var(--muted); display: flex; flex-direction: column; gap: 5px; }
+  .plan li::marker { color: var(--ok); }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; counter-reset: step; }
+  ol.steps > li { counter-increment: step; display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+  ol.steps > li::before { content: counter(step); width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font: 800 1.05rem/1 var(--display); background: var(--ink); color: var(--ground); }
+  ol.steps > li > div { padding-top: 5px; color: var(--muted); }
+  ol.steps strong { color: var(--ink); }
+  kbd { display: inline-block; padding: 2px 7px 3px; font: 700 0.84rem/1.2 var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-bottom-width: 3px; border-radius: 6px; white-space: nowrap; }
+
+  details { border-bottom: 1px solid var(--rule); padding: 14px 0; }
+  details:first-of-type { border-top: 1px solid var(--rule); }
+  summary { cursor: pointer; font-weight: 700; font-size: 1.05rem; }
+  details p { color: var(--muted); margin-top: 8px; max-width: 66ch; }
+
+  footer { border-top: 2px solid var(--ink); padding-top: 22px; display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; color: var(--muted); font-size: 0.95rem; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; }
+    .scene { aspect-ratio: 5 / 4; }
+    .page { gap: 48px; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="hero">
+    <div class="words">
+      <div class="brand"><img src="icon.png" alt=""><span class="eyebrow">For streamers &middot; Windows &middot; <span id="ver">free for Twitch</span></span></div>
+      <h1>Chatskee</h1>
+      <p class="lede">Your Twitch, YouTube, TikTok and Kick chat <span class="dots" aria-hidden="true"><i class="t"></i><i class="y"></i><i class="k"></i><i class="c"></i></span> in one small window that floats over your game. Clicks go straight through it, and your viewers never see it.</p>
+      <div class="actions">
+        <a class="button" id="download" href="https://github.com/davidfilipstudios/chatskee-releases/releases/latest">Download for Windows<small>free &middot; always the newest version</small></a>
+        <a class="button ghost" href="#premium">Free vs $2 Premium</a>
+      </div>
+      <p class="fine">No account, no login, no API keys. Type your channel names and go.</p>
+    </div>
+
+    <div class="scene" role="img" aria-label="A game with the Chatskee chat window floating in the bottom-left corner, showing messages from Twitch, YouTube, TikTok and Kick together">
+      <span class="hud">LIVE 01:42:07</span>
+      <span class="crosshair"></span>
+      <div class="overlay" aria-hidden="true">
+        <div class="m tw"><span class="bd sub">SUB</span><b style="color:#f0b27a">PixelPaloma</b>: first time catching you live!</div>
+        <div class="m yt"><b style="color:#7ec8f0">@NoahBuilds</b>: what settings are you running?</div>
+        <div class="m tt"><b style="color:#e6e07a">mika.plays</b>: hiii from TikTok</div>
+        <div class="m ki"><b style="color:#9be88a">kick_andy</b>: W stream</div>
+        <div class="m tw"><span class="bd mod">MOD</span><b style="color:#f08ab0">ModSquadTess</b>: be kind in chat</div>
+        <div class="m yt paid"><b style="color:#f08a8a">@SaraOnTheSticks</b> <span class="amt">$5.00</span>: Keep it up!</div>
+        <div class="m tw paid"><b style="color:#8ab6f0">JunoFPS</b> <span class="amt">5 gift subs</span>: gifted 5 Tier 1 subs</div>
+        <div class="m tt paid"><b style="color:#e6c07a">leo_r</b> <span class="amt">Rose x5</span>: sent a gift</div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Locked into the game? Chat shouldn't be on the other monitor.</h2>
+    <div class="prose">
+      <p>You're mid-fight, chat is popping off, and to read it you have to look away at a second screen. Or you don't have a second screen at all. And if you stream to more than one platform, that's two, three, four chat windows to keep an eye on.</p>
+      <p><strong>Chatskee puts every chat right where your eyes already are.</strong> Drag it to whatever corner that game doesn't need. Resize it, pick how see-through it is, pick the text size. Lock it and it turns into glass: you can read it, but your mouse goes straight through to the game.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="card"><h3>All your chats, one window</h3><p>Twitch, YouTube, TikTok and Kick together, each message marked with its platform colour.</p></div>
+      <div class="card"><h3>Put it anywhere</h3><p>Move it, resize it, set the transparency and font size. Different game, different corner.</p></div>
+      <div class="card"><h3>Click-through when locked</h3><p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> locks it. It never steals your mouse or keyboard from the game.</p></div>
+      <div class="card"><h3>Hidden from your stream</h3><p>Invisible to OBS capture and screenshots by default. Only you see it.</p></div>
+      <div class="card"><h3>Never miss the big moments</h3><p>Subs, gift subs, bits, raids, Super Chats, stickers, memberships and TikTok gifts light up green.</p></div>
+      <div class="card"><h3>Your chat, your rules</h3><p>Hide bots and !commands, block words, highlight mods and messages that mention you. Messages can fade out when chat is quiet.</p></div>
+      <div class="card"><h3>Light on cheap PCs</h3><p>Built to use almost no CPU while you play. Your frames stay yours.</p></div>
+      <div class="card"><h3>Updates itself</h3><p>When a platform changes something, the fix arrives on its own. Nothing to reinstall.</p></div>
+    </div>
+  </section>
+
+  <section id="premium">
+    <h2>Free for Twitch. $2 once for everything.</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <p class="price">$0 <small>forever</small></p>
+        <ul>
+          <li>Twitch chat overlay</li>
+          <li>Every setting and filter</li>
+          <li>Subs, bits and raids highlighted</li>
+          <li>Automatic updates</li>
+        </ul>
+        <a class="button ghost" href="https://github.com/davidfilipstudios/chatskee-releases/releases/latest">Download</a>
+      </div>
+      <div class="plan best">
+        <h3>Premium &middot; multichat</h3>
+        <p class="price">$2 <small>one time &middot; launch price</small></p>
+        <ul>
+          <li>Everything in Free</li>
+          <li>YouTube, TikTok and Kick in the same window</li>
+          <li>No subscription, ever</li>
+          <li>Use it on up to 3 PCs</li>
+        </ul>
+        <a class="button" href="https://buy.stripe.com/4gM00dddc3Ft4dH3gw43S08">Get Premium</a>
+        <p class="fine">Pay with any email, then type that email into Chatskee (gear &rarr; Premium) to unlock.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Up and running in a minute</h2>
+    <ol class="steps">
+      <li><div><strong>Download and run the installer.</strong> Windows may say "Windows protected your PC" because Chatskee is new: click <strong>More info</strong> &rarr; <strong>Run anyway</strong>.</div></li>
+      <li><div><strong>Type your channel names</strong> in the settings that open. No passwords, nothing to connect.</div></li>
+      <li><div><strong>Drag it where you want it</strong>, then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> to lock it. <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> hides or shows it.</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Questions streamers ask</h2>
+    <div>
+      <details><summary>Is this allowed on Twitch?</summary><p>Yes. Twitch's simulcasting rules stop you from showing merged chat <em>on your Twitch stream</em>. Their own FAQ says tools that combine chat are fine "for your personal use", and that's what Chatskee is: a private window only you see, hidden from capture by default.</p></details>
+      <details><summary>Does it work over fullscreen games?</summary><p>Use <strong>borderless / windowed fullscreen</strong>. Windows doesn't let any window draw over exclusive fullscreen. Most modern games already run borderless, with no real performance difference on Windows 10 and 11.</p></details>
+      <details><summary>Will it upset anti-cheat?</summary><p>It shouldn't. Chatskee never touches your game: no injection, no graphics hooks, no drivers, no admin rights. It's a normal always-on-top window, like a Discord popout. It hasn't been tested against every anti-cheat, so if you try it with yours, tell me how it goes.</p></details>
+      <details><summary>Can I dock it in OBS, or use it on a dual-PC setup?</summary><p>It isn't an OBS dock. It's its own floating window, so on a dual-PC setup just run it on the PC you're looking at.</p></details>
+      <details><summary>Do I have to log in to anything?</summary><p>No. Chatskee reads public chat the same way a logged-out viewer would. It never asks for your passwords or stream keys, and it can't post, ban or change anything.</p></details>
+      <details><summary>Mac? Facebook?</summary><p>Windows only for now. Facebook doesn't let small apps read live chat, so it isn't supported.</p></details>
+    </div>
+  </section>
+
+  <footer>
+    <span>Made by <a href="https://www.twitch.tv/ciaoloop">ciaoloop</a>, a streamer who kept missing his own chat.</span>
+    <nav>
+      <a href="https://www.twitch.tv/ciaoloop">Twitch</a>
+      <a href="https://www.youtube.com/@ciaoloop">YouTube</a>
+      <a href="https://www.tiktok.com/@ciaol00p">TikTok</a>
+      <a href="https://buy.stripe.com/7sYbIVddc6RF5hLbN243S09">Tip the creator</a>
+    </nav>
+  </footer>
+</main>
+
+<script>
+  // Point the button straight at the newest installer (falls back to the releases page if GitHub's API is unreachable).
+  fetch('https://api.github.com/repos/davidfilipstudios/chatskee-releases/releases/latest')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((rel) => {
+      const exe = rel && rel.assets.find((a) => a.name.endsWith('.exe'));
+      if (!exe) return;
+      document.getElementById('download').href = exe.browser_download_url;
+      document.getElementById('ver').textContent = rel.tag_name + ' · free for Twitch';
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>
