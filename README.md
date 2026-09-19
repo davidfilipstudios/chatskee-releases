@@ -7,7 +7,7 @@
 ---
 
 - **One chat, four platforms.** Twitch, YouTube, TikTok and Kick merged into a single feed.
-- **Free for Twitch, forever.** Want YouTube, TikTok and Kick in the same window? That's **Chatskee Premium: $2, one time**, unlocked with the email you pay with, on up to 5 PCs.
+- **Free for Twitch, forever.** Want YouTube, TikTok and Kick in the same window? That's **Chatskee Premium: $2, one time**, unlocked with the email you pay with, on up to 3 PCs.
 - **Floats over your game.** Always on top, and clicks pass straight through it.
 - **Invisible to your stream.** Hidden from OBS Display Capture, so viewers never see it.
 - **Light.** Built to run next to a game on a modest PC.
