@@ -7,8 +7,8 @@
 <meta name="description" content="Chatskee puts your Twitch, YouTube, TikTok and Kick chat in one small window that floats over your game. Click-through, hidden from OBS, light on cheap PCs. Free for Twitch.">
 <meta property="og:title" content="Chatskee - all your stream chats in one window">
 <meta property="og:description" content="Twitch, YouTube, TikTok and Kick chat floating over your game. Your viewers never see it. Free for Twitch.">
-<meta property="og:image" content="https://davidfilipstudios.github.io/chatskee-releases/icon.png">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://davidfilipstudios.github.io/chatskee-releases/demo-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
@@ -43,13 +43,15 @@
   p { margin: 0; }
 
   /* ---- hero ---- */
-  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 36px; align-items: center; }
+  .hero { display: flex; }
+  .demo { margin: -28px 0 0; }
+  .demo video { display: block; width: 100%; height: auto; border-radius: 16px; background: #100e1a; box-shadow: 0 0 0 1px var(--rule); }
   .words { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
   .brand { display: flex; align-items: center; gap: 14px; }
   .brand img { width: 64px; height: 64px; }
   .eyebrow { font: 700 12.5px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); }
   h1 { font-size: clamp(2.4rem, 8vw, 3.6rem); font-weight: 800; letter-spacing: -0.02em; }
-  .lede { font-size: 1.15rem; color: var(--muted); max-width: 46ch; }
+  .lede { font-size: 1.15rem; color: var(--muted); max-width: 58ch; }
   .dots { display: inline-flex; gap: 5px; vertical-align: middle; }
   .dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
   .t { background: var(--twitch); } .y { background: var(--youtube); } .k { background: var(--tiktok); } .c { background: var(--kick); }
@@ -58,32 +60,6 @@
   .button small { display: block; font-weight: 400; font-size: 0.8rem; opacity: 0.85; margin-top: 3px; }
   .button.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
   .fine { font-size: 0.9rem; color: var(--muted); }
-
-  /* ---- the overlay mock: a "game" with Chatskee floating over it ---- */
-  .scene {
-    position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 5;
-    background:
-      radial-gradient(circle at 74% 38%, #ffd27a 0 5%, transparent 5.5%),
-      linear-gradient(168deg, transparent 58%, #10202b 58.3%),
-      linear-gradient(192deg, transparent 66%, #0a1620 66.3%),
-      linear-gradient(180deg, #23405c 0%, #b5623f 52%, #e8a15a 70%, #1a2e3a 70.2%);
-  }
-  .hud { position: absolute; right: 12px; top: 12px; font: 700 11px/1 var(--mono); color: #fff; opacity: 0.75; letter-spacing: 0.08em; }
-  .crosshair { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; translate: -50% -50%; opacity: 0.8;
-    background: linear-gradient(#fff, #fff) center / 2px 100% no-repeat, linear-gradient(#fff, #fff) center / 100% 2px no-repeat; }
-  .overlay {
-    position: absolute; left: 10px; bottom: 10px; width: min(78%, 290px);
-    background: rgb(12 10 22 / 0.55); border-radius: 10px; padding: 8px 8px 8px 6px;
-    display: flex; flex-direction: column; gap: 3px;
-    font: 13.5px/1.35 "Segoe UI", var(--body); color: #f4f2fb; text-shadow: 0 1px 2px #000;
-  }
-  .m { border-left: 3px solid; padding: 2px 6px; border-radius: 0 6px 6px 0; }
-  .m b { font-weight: 700; }
-  .m.tw { border-color: #a970ff; } .m.yt { border-color: #ff5a4f; } .m.tt { border-color: #25d6cf; } .m.ki { border-color: #53fc18; }
-  .m.paid { background: rgb(61 220 132 / 0.22); }
-  .m .amt { color: #3ddc84; font-weight: 700; }
-  .bd { font: 700 9.5px/1 var(--mono); padding: 2px 4px; border-radius: 3px; color: #fff; margin-right: 3px; text-shadow: none; vertical-align: 1px; }
-  .bd.mod { background: #00ad03; } .bd.sub { background: #6441a5; } .bd.vip { background: #e005b9; }
 
   /* ---- sections ---- */
   section { display: flex; flex-direction: column; gap: 20px; }
@@ -120,8 +96,7 @@
   footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 
   @media (max-width: 720px) {
-    .hero { grid-template-columns: 1fr; }
-    .scene { aspect-ratio: 5 / 4; }
+    .demo { margin-top: -16px; }
     .page { gap: 48px; }
   }
 </style>
@@ -141,21 +116,13 @@
       <p class="fine">No account, no login, no API keys. Type your channel names and go.</p>
     </div>
 
-    <div class="scene" role="img" aria-label="A game with the Chatskee chat window floating in the bottom-left corner, showing messages from Twitch, YouTube, TikTok and Kick together">
-      <span class="hud">LIVE 01:42:07</span>
-      <span class="crosshair"></span>
-      <div class="overlay" aria-hidden="true">
-        <div class="m tw"><span class="bd sub">SUB</span><b style="color:#f0b27a">PixelPaloma</b>: first time catching you live!</div>
-        <div class="m yt"><b style="color:#7ec8f0">@NoahBuilds</b>: what settings are you running?</div>
-        <div class="m tt"><b style="color:#e6e07a">mika.plays</b>: hiii from TikTok</div>
-        <div class="m ki"><b style="color:#9be88a">kick_andy</b>: W stream</div>
-        <div class="m tw"><span class="bd mod">MOD</span><b style="color:#f08ab0">ModSquadTess</b>: be kind in chat</div>
-        <div class="m yt paid"><b style="color:#f08a8a">@SaraOnTheSticks</b> <span class="amt">$5.00</span>: Keep it up!</div>
-        <div class="m tw paid"><b style="color:#8ab6f0">JunoFPS</b> <span class="amt">5 gift subs</span>: gifted 5 Tier 1 subs</div>
-        <div class="m tt paid"><b style="color:#e6c07a">leo_r</b> <span class="amt">Rose x5</span>: sent a gift</div>
-      </div>
-    </div>
   </header>
+
+  <figure class="demo">
+    <video autoplay muted loop playsinline preload="metadata" poster="demo-poster.jpg" width="1600" height="900" aria-label="Chatskee in action: the chat window is dragged to a corner and locked, messages from Twitch, YouTube, TikTok and Kick arrive over a game, then a side-by-side shows the stream does not see it">
+      <source src="demo.mp4" type="video/mp4">
+    </video>
+  </figure>
 
   <section>
     <h2>Locked into the game? Chat shouldn't be on the other monitor.</h2>
