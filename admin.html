@@ -43,6 +43,7 @@ button{padding:10px 16px;border-radius:8px;border:0;background:#9d86ff;color:#12
     <h2>Premium</h2><div class="tiles" id="premium"></div>
     <h2>Versions in use (30 days)</h2><div id="versions"></div>
     <h2>Platforms configured (30 days)</h2><div id="platforms"></div>
+    <h2>Reviews (from the app's "Leave a review" button)</h2><div class="wrap"><table><thead><tr><th>When (UTC)</th><th>Who</th><th>Stars</th><th>Review</th><th>App</th></tr></thead><tbody id="reviews"></tbody></table></div>
     <h2>Latest purchases</h2><div class="wrap"><table><thead><tr><th>When (UTC)</th><th>Email</th><th>Amount</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
     <footer>Install counts start from Chatskee 0.11.0 (older versions never pinged). Keep this URL private; rotate the key in Supabase → chatskee_admin_keys if it leaks.</footer>
   </div>
@@ -71,6 +72,14 @@ async function load(key) {
   $('people').replaceChildren(tile('installs, ever', d.people.installs, 'unique PCs that ever pinged'), tile('active today', d.people.active1), tile('active, 7 days', d.people.active7), tile('active, 30 days', d.people.active30), tile('new installs, 7 days', d.people.newInstalls7), tile('installer downloads', d.people.downloads, 'GitHub, all versions'));
   $('premium').replaceChildren(tile('paid purchases', d.premium.paid), tile('revenue', (d.premium.revenueCents / 100).toFixed(2), 'gross, before Stripe fees'), tile('refunded', d.premium.refunded), tile('PCs unlocked', d.premium.devices), tile('unlocks, 7 days', d.premium.unlocks7), tile('premium installs active', d.premium.premiumInstalls));
   bars($('versions'), d.versionCounts); bars($('platforms'), d.platformCounts);
+  const rv = $('reviews'); rv.replaceChildren();
+  if (!(d.feedback || []).length) { const tr = el('tr'); const td = el('td', 'muted', 'No reviews yet.'); td.colSpan = 5; tr.append(td); rv.append(td && tr); }
+  for (const f of d.feedback || []) {
+    const tr = el('tr'); const who = el('td');
+    if (f.channel) { const a = el('a', null, f.name); a.href = /^https?:/.test(f.channel) ? f.channel : 'https://' + f.channel; a.target = '_blank'; a.rel = 'noopener'; who.append(a); } else who.textContent = f.name;
+    tr.append(el('td', null, new Date(f.created_at).toLocaleString('en-GB', { timeZone: 'UTC' })), who, el('td', null, '★'.repeat(f.rating)), el('td', null, f.text), el('td', 'muted', f.version || ''));
+    rv.append(tr);
+  }
   const body = $('rows'); body.replaceChildren();
   if (!d.purchases.length) { const tr = el('tr'); const td = el('td', 'muted', 'No purchases yet.'); td.colSpan = 4; tr.append(td); body.append(tr); }
   for (const p of d.purchases) {
