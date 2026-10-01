@@ -92,6 +92,33 @@
   summary { cursor: pointer; font-weight: 700; font-size: 1.05rem; }
   details p { color: var(--muted); margin-top: 8px; max-width: 66ch; }
 
+  /* ---- proof strip ---- */
+  .proof { display: flex; flex-wrap: wrap; gap: 10px 28px; justify-content: center; margin-top: -24px; font-size: 0.95rem; color: var(--muted); }
+  .proof span b { color: var(--ink); font-weight: 700; }
+
+  /* ---- gallery ---- */
+  .shot-wide { margin: 0; }
+  .shot-wide img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 0 0 1px var(--rule); }
+  .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .shots figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .shots .frame { border-radius: 14px; overflow: hidden; background: #14121f; box-shadow: 0 0 0 1px var(--rule); aspect-ratio: 11 / 14; }
+  .shots .frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  figcaption { font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
+  figcaption b { color: var(--ink); }
+
+  /* ---- quotes ---- */
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .quote { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .quote p { font-size: 1.05rem; line-height: 1.5; }
+  .quote cite { font-style: normal; font-size: 0.9rem; color: var(--muted); }
+  .quote cite a { color: inherit; }
+
+  @media (max-width: 720px) {
+    .shots { grid-template-columns: 1fr; }
+    .shots .frame { aspect-ratio: auto; }
+    .shots .frame img { height: auto; }
+  }
+
   footer { border-top: 2px solid var(--ink); padding-top: 22px; display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; color: var(--muted); font-size: 0.95rem; }
   footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 
@@ -124,6 +151,14 @@
     </video>
   </figure>
 
+  <p class="proof" aria-label="facts">
+    <span><b>Launched</b> September 2026</span>
+    <span><b>0</b> refunds so far</span>
+    <span><b>4</b> platforms in one window</span>
+    <span><b>Under 1%</b> CPU while you play</span>
+    <span><b>Same-day</b> fixes when a platform changes</span>
+  </p>
+
   <section>
     <h2>Locked into the game? Chat shouldn't be on the other monitor.</h2>
     <div class="prose">
@@ -143,6 +178,28 @@
       <div class="card"><h3>Your chat, your rules</h3><p>Hide bots and !commands, block words, highlight mods and messages that mention you. Messages can fade out when chat is quiet.</p></div>
       <div class="card"><h3>Light on cheap PCs</h3><p>Built to use almost no CPU while you play. Your frames stay yours.</p></div>
       <div class="card"><h3>Updates itself</h3><p>When a platform changes something, the fix arrives on its own. Nothing to reinstall.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>This is what it looks like</h2>
+    <figure class="shot-wide">
+      <img src="shots/in-game.jpg" width="1600" height="900" alt="Chatskee locked over a game: a translucent chat panel in the bottom-left corner showing Twitch, YouTube, TikTok and Kick messages, with a Super Chat, gift subs and a raid highlighted in green" loading="lazy">
+      <figcaption><b>Locked.</b> The panel sits in a corner the game doesn't need. Paid events light up green, a message that mentions you lights up gold, and your mouse goes straight through it.</figcaption>
+    </figure>
+    <div class="shots">
+      <figure>
+        <div class="frame"><img src="shots/overlay-unlocked.png" width="780" height="990" alt="Chatskee unlocked, showing the title bar with a connection dot per platform, and the chat with SUB, VIP, MOD and LEAD MOD badges" loading="lazy"></div>
+        <figcaption><b>Unlocked.</b> Drag it, resize it, see at a glance which platforms are connected. Badges for subs, VIPs, mods and lead mods.</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><img src="shots/settings-channels.png" width="660" height="1080" alt="Chatskee settings: Twitch, YouTube, TikTok and Kick channel fields, and the Premium box showing it is active" loading="lazy"></div>
+        <figcaption><b>Setup is four text boxes.</b> Type your channel names. No passwords, no API keys, nothing to connect.</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><img src="shots/settings-filters.png" width="660" height="1080" alt="Chatskee settings: filters for commands, bots and blocked words, highlight options, and sliders for opacity, font size and fade" loading="lazy"></div>
+        <figcaption><b>Your chat, your rules.</b> Hide bots and !commands, block words, highlight mentions and mods, set opacity, text size and fade-out.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -182,6 +239,20 @@
       <li><div><strong>Type your channel names</strong> in the settings that open. No passwords, nothing to connect.</div></li>
       <li><div><strong>Drag it where you want it</strong>, then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd> to lock it. <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> hides or shows it.</div></li>
     </ol>
+  </section>
+
+  <section>
+    <h2>From the replies</h2>
+    <div class="quotes">
+      <blockquote class="quote">
+        <p>"You rock! Sorry for all the questions. Multistream setup been frustrating lately."</p>
+        <cite><a href="https://x.com/Headdband">@Headdband</a>, on X</cite>
+      </blockquote>
+      <blockquote class="quote">
+        <p>"One time payment and we get multi chat forever?"</p>
+        <cite><a href="https://x.com/Headdband">@Headdband</a>, on X. Yes.</cite>
+      </blockquote>
+    </div>
   </section>
 
   <section>
