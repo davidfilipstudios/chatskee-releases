@@ -2,7 +2,7 @@
 <h1 align="center">Chatskee</h1>
 <p align="center">Your Twitch, YouTube, TikTok and Kick chat in one small window that floats over your game.</p>
 
-<p align="center"><a href="https://github.com/davidfilipstudios/chatskee-releases/releases/latest"><b>Download the latest version for Windows</b></a></p>
+<p align="center"><a href="https://chatskee.app"><b>chatskee.app</b></a> · <a href="https://github.com/davidfilipstudios/chatskee-releases/releases/latest"><b>Download the latest version for Windows</b></a></p>
 
 ---
 
