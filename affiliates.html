@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chatskee Affiliates: earn 20-30% sharing the chat overlay for streamers</title>
+<meta name="description" content="Chatskee Affiliates: earn 20-30% sharing the chat overlay for streamers. Free Premium for partners.">
+<meta property="og:title" content="Chatskee Affiliates: get paid when streamers get their chat back">
+<meta property="og:description" content="Chatskee Affiliates: earn 20-30% sharing the chat overlay for streamers. Free Premium for partners.">
+<meta property="og:image" content="https://chatskee.app/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chatskee.app/affiliates">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    --ground: #f5f3fb; --surface: #ffffff; --ink: #17142a; --muted: #5d5878; --rule: #dcd7ec;
+    --accent: #6a45f0; --accent-ink: #ffffff; --accent-soft: #ece6ff;
+    --twitch: #9146ff; --youtube: #e5342b; --tiktok: #0a9d97; --kick: #2f9e00;
+    --ok: #1f9d57;
+    --display: "Bricolage Grotesque", "Trebuchet MS", "Segoe UI", sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+    --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #100e1a; --surface: #1a172a; --ink: #eceaf6; --muted: #a39ebf; --rule: #2e2a45;
+      --accent: #9d86ff; --accent-ink: #120f22; --accent-soft: #251f42;
+      --twitch: #a970ff; --youtube: #ff5a4f; --tiktok: #25d6cf; --kick: #53fc18; --ok: #3ddc84;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #100e1a; --surface: #1a172a; --ink: #eceaf6; --muted: #a39ebf; --rule: #2e2a45;
+    --accent: #9d86ff; --accent-ink: #120f22; --accent-soft: #251f42;
+    --twitch: #a970ff; --youtube: #ff5a4f; --tiktok: #25d6cf; --kick: #53fc18; --ok: #3ddc84;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px 16px 64px; background: var(--ground); color: var(--ink); font: 17px/1.6 var(--body); }
+  .page { max-width: 880px; margin-inline: auto; display: flex; flex-direction: column; gap: 56px; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.12; }
+  p { margin: 0; }
+
+  /* ---- hero ---- */
+  .hero { display: flex; }
+  .demo { margin: -28px 0 0; }
+  .demo video { display: block; width: 100%; height: auto; border-radius: 16px; background: #100e1a; box-shadow: 0 0 0 1px var(--rule); }
+  .words { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img { width: 64px; height: 64px; }
+  .eyebrow { font: 700 12.5px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(2.4rem, 8vw, 3.6rem); font-weight: 800; letter-spacing: -0.02em; }
+  .lede { font-size: 1.15rem; color: var(--muted); max-width: 58ch; }
+  .dots { display: inline-flex; gap: 5px; vertical-align: middle; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+  .t { background: var(--twitch); } .y { background: var(--youtube); } .k { background: var(--tiktok); } .c { background: var(--kick); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; margin-top: 6px; }
+  .button { display: inline-block; padding: 14px 24px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font: 700 1.05rem/1.2 var(--body); text-decoration: none; }
+  .button small { display: block; font-weight: 400; font-size: 0.8rem; opacity: 0.85; margin-top: 3px; }
+  .button.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+  .fine { font-size: 0.9rem; color: var(--muted); }
+
+  /* ---- sections ---- */
+  section { display: flex; flex-direction: column; gap: 20px; }
+  h2 { font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 800; letter-spacing: -0.01em; }
+  .prose { max-width: 62ch; display: flex; flex-direction: column; gap: 12px; color: var(--muted); font-size: 1.08rem; }
+  .prose strong { color: var(--ink); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .card h3 { font-size: 1.12rem; font-weight: 600; }
+  .card p { color: var(--muted); font-size: 0.98rem; line-height: 1.5; }
+
+  .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .plan { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .plan.best { border: 2px solid var(--accent); }
+  .price { font: 800 2.2rem/1 var(--display); }
+  .price small { font: 400 0.95rem/1 var(--body); color: var(--muted); }
+  .plan ul { margin: 0; padding-left: 1.1em; color: var(--muted); display: flex; flex-direction: column; gap: 5px; }
+  .plan li::marker { color: var(--ok); }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; counter-reset: step; }
+  ol.steps > li { counter-increment: step; display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+  ol.steps > li::before { content: counter(step); width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font: 800 1.05rem/1 var(--display); background: var(--ink); color: var(--ground); }
+  ol.steps > li > div { padding-top: 5px; color: var(--muted); }
+  ol.steps strong { color: var(--ink); }
+  kbd { display: inline-block; padding: 2px 7px 3px; font: 700 0.84rem/1.2 var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-bottom-width: 3px; border-radius: 6px; white-space: nowrap; }
+
+  details { border-bottom: 1px solid var(--rule); padding: 14px 0; }
+  details:first-of-type { border-top: 1px solid var(--rule); }
+  summary { cursor: pointer; font-weight: 700; font-size: 1.05rem; }
+  details p { color: var(--muted); margin-top: 8px; max-width: 66ch; }
+
+  .three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .three h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+  .three p { color: var(--muted); }
+  @media (max-width: 720px) { .three { grid-template-columns: 1fr; gap: 18px; } }
+
+  /* ---- proof strip ---- */
+  .proof { display: flex; flex-wrap: wrap; gap: 10px 28px; justify-content: center; margin-top: -24px; font-size: 0.95rem; color: var(--muted); }
+  .proof span b { color: var(--ink); font-weight: 700; }
+
+  /* ---- gallery ---- */
+  .shot-wide { margin: 0; }
+  .shot-wide img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 0 0 1px var(--rule); }
+  .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .shots figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .shots .frame { border-radius: 14px; overflow: hidden; background: #14121f; box-shadow: 0 0 0 1px var(--rule); aspect-ratio: 11 / 14; }
+  .shots .frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  figcaption { font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
+  figcaption b { color: var(--ink); }
+
+  /* ---- quotes ---- */
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .quote { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .quote p { font-size: 1.05rem; line-height: 1.5; }
+  .quote cite { font-style: normal; font-size: 0.9rem; color: var(--muted); }
+  .quote cite a { color: inherit; }
+
+  @media (max-width: 720px) {
+    .shots { grid-template-columns: 1fr; }
+    .shots .frame { aspect-ratio: auto; }
+    .shots .frame img { height: auto; }
+  }
+
+  footer { border-top: 2px solid var(--ink); padding-top: 22px; display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; color: var(--muted); font-size: 0.95rem; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+
+  @media (max-width: 720px) {
+    .demo { margin-top: -16px; }
+  table.earn { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
+  table.earn th, table.earn td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--rule); }
+  table.earn tr:last-child th, table.earn tr:last-child td { border-bottom: 0; }
+  table.earn th { font-weight: 700; color: var(--ink); }
+  table.earn td { font: 700 1rem/1.3 var(--mono); color: var(--accent); }
+  @media (max-width: 720px) { .page { gap: 48px; } }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="hero">
+    <div class="words">
+      <a class="brand" href="/" aria-label="Chatskee home"><img src="icon.png" alt="" width="64" height="64"><span class="eyebrow">Chatskee Affiliates</span></a>
+      <h1>Get paid when streamers get their chat back.</h1>
+      <p class="lede">Share Chatskee with your community. Your viewers get 10% off, you earn on every Premium sale, and your Premium is free.</p>
+      <div class="actions"><a class="button" href="mailto:hello@chatskee.app?subject=Chatskee%20affiliate">Become an affiliate</a></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><div><strong>Email <a href="mailto:hello@chatskee.app?subject=Chatskee%20affiliate">hello@chatskee.app</a></strong> with your channel link.</div></li>
+      <li><div>We unlock <strong>Premium for free</strong> on your email and send you your personal code and link.</div></li>
+      <li><div><strong>Share the code</strong> in your videos, streams, panels or Discord. Your viewers get 10% off Premium.</div></li>
+      <li><div>We pay you monthly via PayPal once you reach $20.</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What you earn</h2>
+    <table class="earn">
+      <tbody>
+        <tr><th scope="row">1-9 sales a month</th><td>20% of every sale</td></tr>
+        <tr><th scope="row">10-24 sales a month</th><td>25% on all that month's sales</td></tr>
+        <tr><th scope="row">25+ sales a month</th><td>30% on all that month's sales</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Why it's easy to share</h2>
+    <div class="prose"><p>Chatskee is <strong>free on Twitch forever</strong>, so anyone can try it with zero risk. Premium adds YouTube, TikTok and Kick chat for a <strong>one-time $6.99</strong>, no subscription.</p></div>
+  </section>
+
+  <section>
+    <h2>Who it's for</h2>
+    <div class="prose"><p>Streamers, streaming setup and OBS YouTubers, Discord communities, anyone who makes "best streaming tools" content.</p></div>
+    <div class="actions"><a class="button" href="mailto:hello@chatskee.app?subject=Chatskee%20affiliate">Become an affiliate</a></div>
+  </section>
+
+  <footer>
+    <span>Made by <a href="https://www.twitch.tv/ciaoloop">ciaoloop</a>. Questions: <a href="mailto:hello@chatskee.app">hello@chatskee.app</a></span>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/affiliates">Affiliates</a>
+      <a href="https://www.twitch.tv/ciaoloop">Twitch</a>
+      <a href="https://www.youtube.com/@ciaoloop">YouTube</a>
+      <a href="https://www.tiktok.com/@ciaoloop">TikTok</a>
+    </nav>
+  </footer>
+</main>
+</body>
+</html>
